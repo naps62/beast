@@ -32,7 +32,7 @@ namespace beast {
 		return *this;
 	}
 
-	void program_options::parse(const int argc, const char **argv) {
+	void program_options::parse(int argc, char **argv) {
 		po::store(po::parse_command_line(argc, argv, this->options), this->vm);
 		po::notify(vm);
 		if (this->has(BEAST_PROGRAM_OPTIONS_HELP_OP_LONG)) {

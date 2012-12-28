@@ -6,26 +6,27 @@
 #include <beast/program_options.hpp>
 using namespace std;
 
-int main(int argc, const char **argv) {
-	// this program receives two unsigned args
-	unsigned one_val, other_val;
+int main(int argc, char **argv) {
+	int val_a, val_b;
 
 	// add the options to the description
 	beast::program_options ops;
 	// flags can be set like this:
-	ops.add("flag,f", "Boolean value");
+	ops.add("flag,f", "optional description");
+	ops.add("other_flag");
 	// or when values are also passed as arguments:
-	ops.add("one_val,a", po::value<unsigned>(&one_val)->default_value(0), "The value");
+	ops.add("val_a,a", po::value<int>(&val_a)->default_value(0), "The value");
 	// or for a simpler syntax:
-	ops.add<unsigned>("other_val,b", other_val, 0, "The other value");
+	ops.add<int>("val_b,b", val_b, 0);
 
 	// now parse the arguments
 	ops.parse(argc, argv);
 
-	// values can be fetched like this:
-	cout << "flag:      " << ops.has("flag") << endl;
-	cout << "one_val:   " << ops.get<unsigned>("one_val") << endl;
+	// flags can be fetched like this:
+	cout << "flag:  " << ops.has("flag") << endl;
+	// and values like this:
+	cout << "val_a: " << ops.get<int>("val_a") << endl;
 	// or they can be accessed directly, if a variable was provided
-	cout << "other_val: " << other_val << endl;
+	cout << "val_b: " << val_b << endl;
 
 }

@@ -37,22 +37,22 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: test_program_options_hello_world
+all: gtest_program_options
 
 dependents:
-	-cd /home/naps62/projects/beast/Debug && $(MAKE) all
+	-cd /home/naps62/projects/beast/Debug && $(MAKE) clean all
 
 # Tool invocations
-test_program_options_hello_world: $(OBJS) $(USER_OBJS) /home/naps62/projects/beast/Debug/libbeast.a
+gtest_program_options: $(OBJS) $(USER_OBJS) /home/naps62/projects/beast/Debug/libbeast.a
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L"/home/naps62/projects/beast/Debug" -o "test_program_options_hello_world" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/naps62/projects/beast/Debug" -o "gtest_program_options" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) test_program_options_hello_world
+	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) gtest_program_options
 	-@echo ' '
 
 .PHONY: all clean dependents

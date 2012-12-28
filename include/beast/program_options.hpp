@@ -39,7 +39,7 @@ namespace beast {
 		 * name should be a string like "help" or "help,h"
 		 * meaning that --help and -h will be used to identify this option
 		 */
-		program_options& add(const char *name, const char *desc);
+		program_options& add(const char *name, const char *desc = "");
 
 		/**
 		 * Adds an option along with the semantic description of its value
@@ -51,7 +51,7 @@ namespace beast {
 		 *
 		 * if no address is given, the value is still accessible via the get method
 		 */
-		program_options& add(const char *name, const po::value_semantic* semantic, const char *desc);
+		program_options& add(const char *name, const po::value_semantic* semantic, const char *desc = NULL);
 
 		/**
 		 * Syntax sugar for the add method
@@ -59,15 +59,25 @@ namespace beast {
 		 *   options.add("name", po::value<int>(&my_int)->default_value(2), "description")
 		 * this method can be used:
 		 *   options.add<int>("name", my_int, 2, "description")
+		 * or
+		 *   options.add<int>("name", 2, "description")
+		 * if you don't want to assing it to a variable
 		 *
 		 * note that instead of an address, my_int is passed as a C++ reference
 		 */
-		template<class T> program_options& add(const char* name, T& addr, T default_value, const char *desc);
+		template<class T> program_options& add(const char* name, T default_value = T());
+		template<class T> program_options& add(const char* name, T& addr, T default_value = T());
+		template<class T> program_options& add(const char* name, const char *desc, T default_value = T());
+		template<class T> program_options& add(const char* name, const char *desc, T& addr, T default_value = T());
+
+		// TODO why doesn't this work?
+//		template<class T> program_options& add(const char* name,          T default_value = T(), const char *desc = NULL);
+//		template<class T> program_options& add(const char* name, T& addr, T default_value = T(), const char *desc = NULL);
 
 		/**
 		 * This method should be called prior to reading any value
 		 */
-		void parse(const int argc, const char **argv);
+		void parse(int argc, char **argv);
 
 		/**
 		 * Returns the amount of ocurrences for a given key
@@ -78,6 +88,12 @@ namespace beast {
 		 * Indicates if a given key is present
 		 */
 		bool has(const char *name);
+
+		/**
+		 * Gets the value of a given flag
+		 * Unlike `has` method, this will also return true was not given, but defaults to true
+		 */
+
 
 		/**
 		 * Gets the value of a given key
@@ -103,7 +119,22 @@ namespace beast {
 	}
 
 	template<class T>
-	program_options& program_options::add(const char* name, T& addr, T default_value, const char *desc) {
+	program_options& program_options::add(const char* name, T default_value) {
+		return this->add(name, po::value<T>()->default_value(default_value), "");
+	}
+
+	template<class T>
+	program_options& program_options::add(const char* name, T& addr, T default_value) {
+		return this->add(name, po::value<T>(&addr)->default_value(default_value), "");
+	}
+
+	template<class T>
+	program_options& program_options::add(const char* name, const char *desc, T default_value) {
+		return this->add(name, po::value<T>()->default_value(default_value), desc);
+	}
+
+	template<class T>
+	program_options& program_options::add(const char* name, const char *desc, T& addr, T default_value) {
 		return this->add(name, po::value<T>(&addr)->default_value(default_value), desc);
 	}
 }
