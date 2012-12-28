@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1954975958/FLAGS/delimiter=\:
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1954975958/FLAGS/operation=append
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1954975958/FLAGS/value=-Wall
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1954975958/append=true
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1954975958/appendContributed=true
+environment/project/cdt.managedbuild.config.gnu.exe.release.1596799432/FLAGS/delimiter=\:
+environment/project/cdt.managedbuild.config.gnu.exe.release.1596799432/FLAGS/operation=append
+environment/project/cdt.managedbuild.config.gnu.exe.release.1596799432/FLAGS/value=-Wall
+environment/project/cdt.managedbuild.config.gnu.exe.release.1596799432/append=true
+environment/project/cdt.managedbuild.config.gnu.exe.release.1596799432/appendContributed=true
