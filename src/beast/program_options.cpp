@@ -28,7 +28,7 @@ namespace beast {
 	/**
 	 * Add methods
 	 */
-	program_options& program_options::add_flag(const char* name, bool& var, const char* desc) {
+	program_options& program_options::flag(const char* name, bool& var, const char* desc) {
 		this->options.add_options() (name, po::bool_switch(&var), desc);
 		return *this;
 	}

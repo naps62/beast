@@ -12,13 +12,14 @@ int main(int argc, char **argv) {
 
 	// add the options to the description
 	beast::program_options ops;
+
 	// flags can be set like this:
-	ops.add_flag("flag_1,f", flag_1, "optional description");
-	ops.add_flag("flag_2",   flag_2); // description is optional
+	ops.flag("flag_1,f", flag_1, "optional description");
+	ops.flag("flag_2",   flag_2);
 
 	// or when values are also passed as arguments:
-	ops.add_value("val_a,a", val_a, 0, "The value");
-	ops.add_value("val_b,b", val_b);
+	ops.value("val_a,a", val_a, 0, "The value");
+	ops.value("val_b,b", val_b);
 
 	// now parse the arguments
 	ops.parse(argc, argv);

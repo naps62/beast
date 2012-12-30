@@ -45,7 +45,7 @@ namespace beast {
 		 * name should be a string like "help" or "help,h"
 		 * meaning that --help and -h will be used to identify this option
 		 */
-		program_options& add_flag(const char *name, bool& var, const char *desc = "");
+		program_options& flag(const char *name, bool& var, const char *desc = "");
 
 		/**
 		 * Adds an options with the type being given by the template parameter
@@ -54,7 +54,7 @@ namespace beast {
 		 * note that instead of an address, my_int is passed as a C++ reference
 		 */
 		//template<class T> program_options& add(const char* name,          T default_value = T(), const char *desc = "");
-		template<class T> program_options& add_value(const char* name, T& addr, T default_value = T(), const char *desc = "");
+		template<class T> program_options& value(const char* name, T& addr, T default_value = T(), const char *desc = "");
 
 		/**
 		 * This method should be called prior to reading any value
@@ -98,7 +98,7 @@ namespace beast {
 		 */
 		void _init();
 
-		template<class T> program_options& _add_value(const char* name, po::value_semantic* semantic, const char *desc = NULL);
+		template<class T> program_options& _value(const char* name, po::value_semantic* semantic, const char *desc = NULL);
 	};
 
 	template<class T>
@@ -108,12 +108,12 @@ namespace beast {
 
 
 	template<class T>
-	program_options& program_options::add_value(const char* name, T& addr, T default_value, const char *desc) {
-		return this->_add_value<T>(name, po::value<T>(&addr)->default_value(default_value), desc);
+	program_options& program_options::value(const char* name, T& addr, T default_value, const char *desc) {
+		return this->_value<T>(name, po::value<T>(&addr)->default_value(default_value), desc);
 	}
 
 	template<class T>
-	program_options& program_options::_add_value(const char* name, po::value_semantic* semantic, const char *desc) {
+	program_options& program_options::_value(const char* name, po::value_semantic* semantic, const char *desc) {
 		this->options.add_options() (name, semantic, desc);
 		return *this;
 	}
