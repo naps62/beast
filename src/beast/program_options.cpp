@@ -10,42 +10,53 @@
 
 namespace beast {
 
+	/**
+	 * Constructors
+	 */
 	program_options::program_options()
 	: options(BEAST_PROGRAM_OPTIONS_DESC)
 	{
-		init();
+		_init();
 	}
 
 	program_options::program_options(const char* desc)
 	: options(desc)
 	{
-		init();
+		_init();
 	}
 
-	program_options& program_options::add(const char* name, const char* desc) {
-		this->options.add_options() (name, desc);
+	/**
+	 * Add methods
+	 */
+	program_options& program_options::add_flag(const char* name, bool& var, const char* desc) {
+		this->options.add_options() (name, po::bool_switch(&var), desc);
 		return *this;
 	}
 
-	program_options& program_options::add(const char *name, const po::value_semantic* semantic, const char *desc) {
-		this->options.add_options() (name, semantic, desc);
-		return *this;
-	}
-
+	/**
+	 *
+	 */
 	void program_options::parse(int argc, char **argv) {
 		po::store(po::parse_command_line(argc, argv, this->options), this->vm);
 		po::notify(vm);
-		if (this->has(BEAST_PROGRAM_OPTIONS_HELP_OP_LONG)) {
+		if (this->count("help")) {
 			std::cout << this->help();
 			exit(0);
 		}
 	}
 
-	int program_options::count(const char* name) {
+	/**
+	 * Getters
+	 */
+	bool program_options::get_flag(const char* name) const {
+		return this->get<bool>(name);
+	}
+
+	int program_options::count(const char* name) const {
 		return this->vm.count(name);
 	}
 
-	bool program_options::has(const char* name) {
+	bool program_options::has(const char* name) const {
 		return this->count(name) > 0;
 	}
 
@@ -53,8 +64,8 @@ namespace beast {
 		return this->options;
 	}
 
-	void program_options::init() {
-		this->add(BEAST_PROGRAM_OPTIONS_HELP_OP, BEAST_PROGRAM_OPTIONS_HELP_DESC);
+	void program_options::_init() {
+		this->options.add_options() (BEAST_PROGRAM_OPTIONS_HELP_OP, BEAST_PROGRAM_OPTIONS_HELP_DESC);
 	}
 
 }
