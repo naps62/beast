@@ -30,6 +30,6 @@ int main(int argc, char **argv) {
 	cout << "flag_2:" << flag_2                 << endl;
 	// and values like this:
 	cout << "val_a: " << ops.get<int>("val_a")  << endl;
-	cout << "val_b: " << val_b                  << endl;g
+	cout << "val_b: " << val_b                  << endl;
 
 }
