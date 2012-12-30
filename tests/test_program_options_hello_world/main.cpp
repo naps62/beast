@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
 
 	// add the options to the description
 	beast::program_options ops;
+	// the --help / -h flag is added by default
 
 	// flags can be set like this:
 	ops.flag("flag_1,f", flag_1, "optional description");
@@ -29,6 +30,6 @@ int main(int argc, char **argv) {
 	cout << "flag_2:" << flag_2                 << endl;
 	// and values like this:
 	cout << "val_a: " << ops.get<int>("val_a")  << endl;
-	cout << "val_b: " << val_b                  << endl;
+	cout << "val_b: " << val_b                  << endl;g
 
 }
