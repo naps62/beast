@@ -34,7 +34,7 @@ TEST(SimpleFlag, SimpleFlagTrue) {
 	ops.flag("flag", flag, "description");
 	ops.parse(argc, argv);
 
-    EXPECT_EQ(true, flag);
+    EXPECT_TRUE(flag);
 }
 
 // flag should be false by default
@@ -49,7 +49,7 @@ TEST(SimpleFlag, SimpleFlagFalse) {
 	ops.flag("flag", flag, "description");
 	ops.parse(argc, argv);
 
-    EXPECT_EQ(false, flag);
+    EXPECT_FALSE(flag);
 }
 
 // int variable value should have default value if not set
@@ -99,6 +99,48 @@ TEST(SimpleValue, GivenFloatValue) {
 	ops.parse(argc, argv);
 
 	EXPECT_EQ(62.62f, val);
+}
+
+// config file should load properly
+TEST(ConfigFile, ConfigLoad) {
+	char  arg0[] = "program_name";
+	char  arg1[] = "--options-file";
+	char  arg2[] = "../sample_options.cfg";
+	char* argv[] = { &arg0[0], &arg1[0], &arg2[0], NULL };
+	int argc = INIT_ARGC;
+
+	bool flag = false;
+	int val;
+
+	beast::program_options ops;
+	ops.flag("flag",   flag);
+	ops.value("value", val);
+	ops.parse(argc, argv);
+
+	EXPECT_TRUE(flag);
+	EXPECT_EQ(62, val);
+}
+
+// command line options should take precedence over config file
+// also, @filename short version should work like the --options-file
+TEST(ConfigFile, ConfigPrecedence) {
+	char  arg0[] = "program_name";
+	char  arg1[] = "@../sample_options.cfg";
+	char  arg2[] = "--value";
+	char  arg3[] = "1";
+	char* argv[] = { &arg0[0], &arg1[0], &arg2[0], &arg3[0], NULL };
+	int argc = INIT_ARGC;
+
+	bool flag = false;
+	int val;
+
+	beast::program_options ops;
+	ops.flag("flag",   flag);
+	ops.value("value", val);
+	ops.parse(argc, argv);
+
+	EXPECT_TRUE(flag);
+	EXPECT_EQ(1, val); // this should be the value from the cmd line, not the file
 }
 
 

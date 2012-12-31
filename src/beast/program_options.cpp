@@ -6,7 +6,24 @@
  */
 
 #include <beast/program_options.hpp>
+
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+using std::stringstream;
+using std::pair;
+using std::make_pair;
+using std::ifstream;
+using std::vector;
+
+#include <boost/tokenizer.hpp>
+#include <boost/token_functions.hpp>
 
 namespace beast {
 
@@ -37,10 +54,22 @@ namespace beast {
 	 *
 	 */
 	void program_options::parse(int argc, char **argv) {
-		po::store(po::parse_command_line(argc, argv, this->options), this->vm);
+		po::store(
+				po::command_line_parser(argc, argv)                   // command line options
+				   .options(this->options)                            // option definitions
+				   .extra_parser(program_options::file_option_parser) // look for @filename argument
+				   .run()
+				, this->vm);
+
+		// check for options-file
+		if (vm.count(BEAST_PROGRAM_OPTIONS_OP_FILE)) {
+			this->load_options_file(vm[BEAST_PROGRAM_OPTIONS_OP_FILE].as<string>());
+		}
 		po::notify(vm);
+
+		// deal with help options
 		if (this->count("help")) {
-			std::cout << this->help();
+			cout << this->help();
 			exit(0);
 		}
 	}
@@ -65,7 +94,36 @@ namespace beast {
 	}
 
 	void program_options::_init() {
-		this->options.add_options() (BEAST_PROGRAM_OPTIONS_HELP_OP, BEAST_PROGRAM_OPTIONS_HELP_DESC);
+		this->options.add_options()
+			(BEAST_PROGRAM_OPTIONS_HELP_OP, BEAST_PROGRAM_OPTIONS_HELP_DESC)
+			(BEAST_PROGRAM_OPTIONS_OP_FILE, po::value<string>(), BEAST_PROGRAM_OPTIONS_OP_FILE_DESC);
+	}
+
+	pair<string, string> program_options::file_option_parser(const string& s) {
+		if (s[0] == '@')
+			return make_pair(string(BEAST_PROGRAM_OPTIONS_OP_FILE), s.substr(1));
+		else
+			return pair<string, string>();
+	}
+
+	void program_options::load_options_file(const string& filename) {
+		// Load the file and tokenize it
+		ifstream ifs(filename.c_str());
+		if (!ifs) {
+			cerr << filename << ": " << BEAST_PROGRAM_OPTIONS_ERROR_OP_FILE << endl;
+			exit(1);
+		}
+		// Read the whole file into a string
+		stringstream ss;
+		ss << ifs.rdbuf();
+		// Split the file content
+		boost::char_separator<char> sep(" \n\r");
+		string sstr = ss.str();
+		boost::tokenizer<boost::char_separator<char> > tok(sstr, sep);
+		vector<string> args;
+		copy(tok.begin(), tok.end(), back_inserter(args));
+		// Parse the file and store the options
+		po::store(po::command_line_parser(args).options(this->options).run(), this->vm);
 	}
 
 }

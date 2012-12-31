@@ -12,6 +12,9 @@
 
 #include <beast/common.hpp>
 
+#include <string>
+#include <utility> // pair<>
+
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 using po::value;
@@ -70,7 +73,17 @@ namespace beast {
 
 		// Internal helper method to add a value option
 		template<class T> program_options& _value(const char* name, po::value_semantic* semantic, const char *desc = NULL);
+
+		// looks for a @filename option in the arguments
+		static std::pair<std::string, std::string> file_option_parser(const std::string& s);
+
+		// load an options file
+		void load_options_file(const std::string& filename);
 	};
+
+
+
+
 
 	//
 	// Template definitions
