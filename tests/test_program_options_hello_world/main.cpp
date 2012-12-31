@@ -30,6 +30,10 @@ int main(int argc, char **argv) {
 	cout << "flag_2:" << flag_2                 << endl;
 	// and values like this:
 	cout << "val_a: " << ops.get<int>("val_a")  << endl;
+	val_a++;
+	cout << "val_a: " << ops.get<int>("val_a")  << endl;
 	cout << "val_b: " << val_b                  << endl;
+
+	// fetching via the ops.get methods will always give the original value accross the entire program
 
 }
