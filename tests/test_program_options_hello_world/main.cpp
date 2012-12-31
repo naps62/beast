@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char **argv) {
 	int val_a, val_b;
-	bool flag_1 = true, flag_2 = false;
+	bool flag_1, flag_2;
 
 	// add the options to the description
 	beast::program_options ops;
