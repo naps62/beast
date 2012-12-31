@@ -61,11 +61,12 @@ namespace beast {
 				   .run()
 				, this->vm);
 
+		po::notify(this->vm);
+
 		// check for options-file
 		if (vm.count(BEAST_PROGRAM_OPTIONS_OP_FILE)) {
 			this->load_options_file(vm[BEAST_PROGRAM_OPTIONS_OP_FILE].as<string>());
 		}
-		po::notify(vm);
 
 		// deal with help options
 		if (this->count("help")) {
@@ -113,17 +114,9 @@ namespace beast {
 			cerr << filename << ": " << BEAST_PROGRAM_OPTIONS_ERROR_OP_FILE << endl;
 			exit(1);
 		}
-		// Read the whole file into a string
-		stringstream ss;
-		ss << ifs.rdbuf();
-		// Split the file content
-		boost::char_separator<char> sep(" \n\r");
-		string sstr = ss.str();
-		boost::tokenizer<boost::char_separator<char> > tok(sstr, sep);
-		vector<string> args;
-		copy(tok.begin(), tok.end(), back_inserter(args));
-		// Parse the file and store the options
-		po::store(po::command_line_parser(args).options(this->options).run(), this->vm);
+		po::store(po::parse_config_file(ifs, this->options), this->vm);
+		ifs.close();
+		po::notify(this->vm);
 	}
 
 }
