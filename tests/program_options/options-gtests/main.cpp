@@ -15,7 +15,7 @@ TEST(ProgramOptions, NoArguments) {
     char* argv[] = { &arg0[0], NULL };
     int   argc = INIT_ARGC;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.parse(argc, argv);
 
 	EXPECT_EQ(0, ops.has("random_name"));
@@ -30,7 +30,7 @@ TEST(SimpleFlag, SimpleFlagTrue) {
 
     bool flag = false;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.flag("flag", flag, "description");
 	ops.parse(argc, argv);
 
@@ -45,7 +45,7 @@ TEST(SimpleFlag, SimpleFlagFalse) {
 
     bool flag = true;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.flag("flag", flag, "description");
 	ops.parse(argc, argv);
 
@@ -60,7 +60,7 @@ TEST(SimpleValue, DefaultValue) {
 
 	int val;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.value("val", val, 62);
 	ops.parse(argc, argv);
 
@@ -77,7 +77,7 @@ TEST(SimpleValue, GivenValue) {
 
 	int val;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.value("val", val, 0);
 	ops.parse(argc, argv);
 
@@ -94,7 +94,7 @@ TEST(SimpleValue, GivenFloatValue) {
 
 	float val;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.value("val", val, 0.0f);
 	ops.parse(argc, argv);
 
@@ -112,7 +112,7 @@ TEST(ConfigFile, ConfigLoad) {
 	bool flag = false;
 	int val;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.flag("flag",   flag);
 	ops.value("value", val);
 	ops.parse(argc, argv);
@@ -134,7 +134,7 @@ TEST(ConfigFile, ConfigPrecedence) {
 	bool flag = false;
 	int val;
 
-	beast::program_options ops;
+	beast::program_options::options ops;
 	ops.flag("flag",   flag);
 	ops.value("value", val);
 	ops.parse(argc, argv);

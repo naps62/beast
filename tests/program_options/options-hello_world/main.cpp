@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 	bool flag_1, flag_2;
 
 	// add the options to the description
-	beast::program_options ops;
+	beast::program_options::options ops;
 	// the --help / -h flag is added by default
 
 	// flags can be set like this:
