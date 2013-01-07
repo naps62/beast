@@ -8,7 +8,7 @@
 #ifndef __BEAST_PO_OPTIONS_HPP_
 #define __BEAST_PO_OPTIONS_HPP_
 
-#include <beast/common.hpp>
+#include <beast/program_options/defaults.hpp>
 
 #include <string>
 #include <utility> // pair<T>

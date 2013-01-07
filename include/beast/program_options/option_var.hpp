@@ -8,6 +8,7 @@
 #ifndef _BEAST_PO_OPTION_VAR_HPP_
 #define _BEAST_PO_OPTION_VAR_HPP_
 
+#include <beast/program_options/defaults.hpp>
 #include <beast/program_options/options.hpp>
 
 namespace beast { namespace program_options {

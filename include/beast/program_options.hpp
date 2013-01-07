@@ -10,6 +10,7 @@
 #ifndef _BEAST_PO_HPP_
 #define _BEAST_PO_HPP_
 
+#include <beast/program_options/defaults.hpp>
 #include <beast/program_options/options.hpp>
 #include <beast/program_options/option_var.hpp>
 

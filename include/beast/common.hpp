@@ -8,7 +8,7 @@
 #ifndef __BEAST_COMMON_HPP_
 #define __BEAST_COMMON_HPP_
 
-#include <beast/common/defaults.hpp>
+#include <beast/common/macros.hpp>
 
 
 #endif /* __BEAST_COMMON_HPP_ */
