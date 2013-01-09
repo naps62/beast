@@ -10,7 +10,7 @@
 
 #include <beast/common.hpp>
 #include <beast/time/defaults.hpp>
-#include <time_val.hpp>
+#include <beast/time/time_val.hpp>
 
 #include <string>
 using std::string;
@@ -20,6 +20,12 @@ using std::vector;
 
 #include <numeric>
 using std::accumulate;
+
+#include <algorithm>
+using std::nth_element;
+
+#include <iostream>
+using namespace std;
 
 namespace beast { namespace time {
 
@@ -36,37 +42,42 @@ namespace beast { namespace time {
 	public:
 
 		timer()
-		: _name(BEAST_TIMER_NAME)
+		: _name(BEAST_TIMER_NAME), running(false)
 		{
 		}
 
 		timer(const string& name)
-		: _name(name)
+		: _name(name), running(false)
 		{
 		}
 
 		timer(const char* name)
-		: _name(name)
+		: _name(name), running(false)
 		{
 		}
 
 		__beast_force_inline__
 		void start() {
 			running = true;
-			_gettime(_start);
+			gettime(_start);
 		}
 
 		__beast_force_inline__
 		void stop() {
-			_gettime(_end);
-			running = false;
-			_history.push_back((_end - _start).ns());
+			if (running) {
+				elapsed();
+				running = false;
+				_history.push_back(_elapsed.ns());
+			}
 		}
 
 		__beast_force_inline__
 		time_val elapsed() {
-			if (running) _gettime(_end);
-			return _elapsed = _end - _start;
+			if (running) {
+				gettime(_end);
+				_elapsed = _end - _start;
+			}
+			return _elapsed;
 		}
 
 		double average() {
@@ -88,7 +99,7 @@ namespace beast { namespace time {
 	private:
 
 		__beast_force_inline__
-		void _gettime(time_val& t) {
+		void gettime(timespec& t) {
 			clock_gettime(BEAST_TIMER_CLOCK_TYPE, &t);
 		}
 

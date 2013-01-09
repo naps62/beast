@@ -42,8 +42,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1284575589" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1554769186" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.596283092" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="rt"/>
 									<listOptionValue builtIn="false" value="beast"/>
-									<listOptionValue builtIn="false" value="boost_program_options"/>
 									<listOptionValue builtIn="false" value="gtest"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.414919694" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
@@ -110,8 +110,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.787741345" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.1843118916" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release">
 								<option id="gnu.cpp.link.option.libs.103209307" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="rt"/>
 									<listOptionValue builtIn="false" value="beast"/>
-									<listOptionValue builtIn="false" value="boost_program_options"/>
 									<listOptionValue builtIn="false" value="gtest"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.603337409" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
