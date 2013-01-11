@@ -80,6 +80,11 @@ namespace beast { namespace time {
 			return _elapsed;
 		}
 
+		__beast_force_inline__
+		int count() const {
+			return _history.size();
+		}
+
 		double average() {
 			return accumulate(_history.begin(), _history.end(), 0.0) / _history.size();
 		}

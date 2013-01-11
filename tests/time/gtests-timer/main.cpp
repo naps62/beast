@@ -69,6 +69,20 @@ TEST(ElapsedTime, ConsecutiveElapsedAfterStop) {
 	ASSERT_EQ(ns2, ns1);
 }
 
+TEST(Count, DefaultToZero) {
+	timer t;
+	ASSERT_EQ(0, t.count());
+}
+
+TEST(Count, CorrectValue) {
+	timer t;
+	t.start();
+	t.stop();
+	t.start();
+	t.stop();
+	ASSERT_EQ(2, t.count());
+}
+
 
 int main (int argc, char *argv[]) {
 	testing::InitGoogleTest(&argc, argv);
