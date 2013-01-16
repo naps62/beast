@@ -1,12 +1,11 @@
 /*
- * main.cpp
+ * po_options.h
  *
- *  Created on: Dec 28, 2012
+ *  Created on: Jan 16, 2013
  *      Author: naps62
  */
 
 #include <beast/program_options.hpp>
-#include <gtest/gtest.h>
 
 #define INIT_ARGC ((int)(sizeof(argv) / sizeof(argv[0])) - 1)
 
@@ -142,10 +141,3 @@ TEST(ConfigFile, ConfigPrecedence) {
 	EXPECT_TRUE(flag);
 	EXPECT_EQ(1, val); // this should be the value from the cmd line, not the file
 }
-
-
-int main (int argc, char *argv[]) {
-	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
-}
-

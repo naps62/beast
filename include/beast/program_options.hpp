@@ -12,6 +12,5 @@
 
 #include <beast/program_options/defaults.hpp>
 #include <beast/program_options/options.hpp>
-#include <beast/program_options/option_var.hpp>
 
 #endif /* _BEAST_PO_HPP_ */

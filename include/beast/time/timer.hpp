@@ -31,12 +31,13 @@ namespace beast { namespace time {
 
 	class timer {
 
+	protected:
+
 		const string _name;
 		bool running;
 		time_val _start;
 		time_val _end;
 		time_val _elapsed;
-		vector<double> _history;
 
 
 	public:
@@ -67,7 +68,6 @@ namespace beast { namespace time {
 			if (running) {
 				elapsed();
 				running = false;
-				_history.push_back(_elapsed.ns());
 			}
 		}
 
@@ -80,28 +80,14 @@ namespace beast { namespace time {
 			return _elapsed;
 		}
 
-		__beast_force_inline__
-		int count() const {
-			return _history.size();
-		}
-
-		double average() {
-			return accumulate(_history.begin(), _history.end(), 0.0) / _history.size();
-		}
-
-		double median() {
-			int middle = _history.size() / 2;
-			nth_element(_history.begin(), _history.begin()+middle, _history.end());
-			return _history[middle];
-		}
-
 		__beast_force_inline__ string name() const { return _name; }
 		__beast_force_inline__ double ns() const { return _elapsed.ns(); }
 		__beast_force_inline__ double us() const { return _elapsed.us(); }
 		__beast_force_inline__ double ms() const { return _elapsed.ms(); }
 		__beast_force_inline__ double s () const { return _elapsed.s(); }
+		__beast_force_inline__ double value() const { return ns(); }
 
-	private:
+	protected:
 
 		__beast_force_inline__
 		void gettime(timespec& t) {

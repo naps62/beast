@@ -1,10 +1,13 @@
 /*
- * main.cpp
+ * time_timer.h
  *
- *  Created on: Dec 28, 2012
+ *  Created on: Jan 16, 2013
  *      Author: naps62
  */
-#include <gtest/gtest.h>
+
+#ifndef GTEST_TIME_TIMER_H_
+#define GTEST_TIME_TIMER_H_
+
 #include <beast/time/timer.hpp>
 using beast::time::timer;
 
@@ -69,22 +72,5 @@ TEST(ElapsedTime, ConsecutiveElapsedAfterStop) {
 	ASSERT_EQ(ns2, ns1);
 }
 
-TEST(Count, DefaultToZero) {
-	timer t;
-	ASSERT_EQ(0, t.count());
-}
 
-TEST(Count, CorrectValue) {
-	timer t;
-	t.start();
-	t.stop();
-	t.start();
-	t.stop();
-	ASSERT_EQ(2, t.count());
-}
-
-
-int main (int argc, char *argv[]) {
-	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
-}
+#endif // GTEST_TIME_TIMER_H_

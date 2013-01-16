@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>beast_gtests-time_timer</name>
+	<name>beast_gtests</name>
 	<comment></comment>
 	<projects>
 		<project>beast</project>
