@@ -30,7 +30,8 @@ namespace beast { namespace profile {
 	void dumper::dump() const {
 		#ifdef _Profile
 			stringstream keys, values;
-			for (data_t::const_iterator it = data.begin(); it != data.end(); ++it) {
+			//for (data_t::const_iterator it = data.begin(); it != data.end(); ++it) {
+			for (auto it = data.begin(); it != data.end(); ++it) {
 				keys   << (it->first)  << ';';
 				values << (it->second) << ';';
 			}

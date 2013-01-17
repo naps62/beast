@@ -28,8 +28,7 @@ namespace beast { namespace profile {
 	class dumper {
 
 		// key-value pair containing counter name and value
-		typedef map<string, string> data_t;
-		data_t data;
+		map<const string, const string> data;
 
 	public:
 
@@ -42,9 +41,8 @@ namespace beast { namespace profile {
 	template<class T>
 	void dumper::add(const T& obj) {
 		#ifdef _Profile
-			stringstream name, value;
-			name  << obj.name();
-			value << obj.value();
+			const stringstream name(obj.name());
+			const stringstream value(obj.value());
 			data.insert(make_pair(name.str(), value.str()));
 		#endif
 	}
