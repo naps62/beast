@@ -3,6 +3,7 @@
 require 'trollop'
 require 'open3'
 require 'set'
+require 'pry'
 
 opts = Trollop::options do
   opt :k,       'number of results to consider',                  default: 5
@@ -15,38 +16,43 @@ end
 command = ARGV.join ' '
 
 class Execution
-  attr_accessor :value, :out, :err
+  attr_accessor :value, :out, :err, :thread
 
   def initialize(command)
-    stdin, @out, @err = Open3.popen3(command)
-    @value = @out.split.last.to_f
+    stdin, out, err, @thread = Open3.popen3(command)
+    @out = out.readlines
+    @err = err.readlines
+    @value = @out.last.to_f
   end
 
   def <=>(other)
-    return @value <=> other.value unless opts[:reverse]
-    return other.value <=> @value
+    ret = @value <=> other.value
+    return @thread.pid <=> other.thread.pid if ret.zero?
+    return  ret unless opts[:reverse]
+    return -ret
   end
 end
+
 
 def done?(size, diff, params)
   return false if params[:min] > 0 && size <  params[:min] # at least #{min} runs made
   return true  if params[:max] > 0 && size >= params[:max] # at most  #{max} runs made
-  return true  if k >= params[:k]
+  return true  if size >= params[:k]
   return false
 end
 
 
 execs = SortedSet.new
-done  = false
 k     = opts[:k]
 
-loop
+begin
   # call the program
   execs.add(Execution.new(command))
   # only the value of the first k results is relevant
-  values = execs[0..k].map(&:value)
+  values = execs.to_a[0..k].map(&:value)
   # results are ordered, so the last diff is enough to check if we have k good results
   diff = (values.last - values.first) / values.first
-until done?(values.size, diff, opts)
+end until done?(values.size, diff, opts)
 
+final = execs.to_a[0..k]
 binding.pry
