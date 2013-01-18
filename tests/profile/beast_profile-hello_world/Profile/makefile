@@ -8,7 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Release/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -41,7 +40,7 @@ endif
 all: beast_profile-hello_world
 
 dependents:
-	-cd /home/naps62/projects/beast/Profile && $(MAKE) all
+	-cd /home/naps62/projects/beast/Profile && $(MAKE) clean all
 
 # Tool invocations
 beast_profile-hello_world: $(OBJS) $(USER_OBJS) /home/naps62/projects/beast/Profile/libbeast.a

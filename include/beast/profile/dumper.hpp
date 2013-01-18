@@ -10,9 +10,6 @@
 
 #include <beast/profile.hpp>
 
-#include <beast/time/timer.hpp>
-using beast::time::timer;
-
 #include <vector>
 #include <map>
 #include <string>
@@ -41,8 +38,9 @@ namespace beast { namespace profile {
 	template<class T>
 	void dumper::add(const T& obj) {
 		#ifdef _Profile
-			const stringstream name(obj.name());
-			const stringstream value(obj.value());
+			stringstream name, value;
+			name  << obj.name();
+			value << obj.value();
 			data.insert(make_pair(name.str(), value.str()));
 		#endif
 	}
