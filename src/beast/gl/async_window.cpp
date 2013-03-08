@@ -10,7 +10,9 @@ namespace beast { namespace gl {
 	async_window* async_window::current_handle;
 
 	// constructor
-	async_window :: async_window() {
+	async_window :: async_window(const string _name, const uint _w, const uint _h)
+	: name(_name), w(_w), h(_h)
+	{
 	}
 
 	// start the display thread
@@ -38,7 +40,7 @@ namespace beast { namespace gl {
 
 	// initializes opengl
 	void async_window :: gl_init() {
-		char  arg0[] = "program_name";
+		char*  arg0 = "program_name";
 		char* argv[] = { &arg0[0], NULL };
 		int argc = 1;
 
@@ -46,13 +48,7 @@ namespace beast { namespace gl {
 		glutInit(&argc, argv);
 		glutInitWindowSize(800, 600);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-		glutCreateWindow("async_window");
-
-		// default viewport setup
-		glMatrixMode(GL_PROJECTION);
-		glViewport(0, 0, 800, 600);
-		glLoadIdentity();
-		glOrtho(0.f, 800 - 1.f, 0.f, 600 -1.f, -1.f, -1.f);
+		glutCreateWindow(name.c_str());
 
 		// callbacks
 		glutMouseFunc(async_window::_mouse);
@@ -60,26 +56,31 @@ namespace beast { namespace gl {
 		glutSpecialFunc(async_window::_special);
 		glutDisplayFunc(async_window::_render);
 		glutIdleFunc(async_window::_idle);
+
+		// default viewport setup
+		glMatrixMode(GL_PROJECTION);
+		glViewport(0, 0, 800, 600);
+		glLoadIdentity();
 	}
 
 	//
 	// Callbacks
 	//
-	void async_window::render() { }
-	void async_window::keyboard(unsigned char key, int mousex, int mousey) { }
-	void async_window::mouse(int btn, int state, int x, int y) { }
-	void async_window::special(int key, int mousex, int mousey) { }
-	void async_window::idle() { }
+	void async_window :: render() { }
+	void async_window :: keyboard(uchar key, int mousex, int mousey) { }
+	void async_window :: mouse(int btn, int state, int x, int y) { }
+	void async_window :: special(int key, int mousex, int mousey) { }
+	void async_window :: idle() { }
 
 
-	void async_window::_render() {
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f );
+	void async_window :: _render() {
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		async_window::current_handle->render();
 		glutSwapBuffers();
 	}
 
-	void async_window::_keyboard(unsigned char key, int mousex, int mousey) {
+	void async_window :: _keyboard(unsigned char key, int mousex, int mousey) {
 		switch (key) {
 		case 27: // ESC
 			async_window::current_handle->stop();
@@ -89,17 +90,17 @@ namespace beast { namespace gl {
 		async_window::current_handle->keyboard(key, mousex, mousey);
 	}
 
-	void async_window::_mouse(int btn, int state, int x, int y) {
+	void async_window :: _mouse(int btn, int state, int x, int y) {
 		// delegate
 		async_window::current_handle->mouse(btn, state, x, y);
 	}
 
-	void async_window::_special(int key, int mousex, int mousey) {
+	void async_window :: _special(int key, int mousex, int mousey) {
 		// delegate
 		async_window::current_handle->special(key, mousex, mousey);
 	}
 
-	void async_window::_idle() {
+	void async_window :: _idle() {
 		// delegate
 		async_window::current_handle->idle();
 	}

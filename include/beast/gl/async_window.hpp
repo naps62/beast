@@ -8,7 +8,11 @@
 #ifndef _BEAST_GL_ASYNC_WINDOW_HPP_
 #define _BEAST_GL_ASYNC_WINDOW_HPP_
 
+#include <beast/common.hpp>
+
 #include <boost/thread.hpp>
+#include <string>
+using std::string;
 
 namespace beast { namespace gl {
 
@@ -20,7 +24,7 @@ namespace beast { namespace gl {
 
 
 	public:
-		async_window();
+		async_window(const string _name, const uint _w, const uint _h);
 
 		void start();				// starts the window using a separate boost::thread
 		void stop();				// triggers kill of the window thread
@@ -28,14 +32,16 @@ namespace beast { namespace gl {
 		void run();					// method run by the window thread
 
 		// opengl public (overridable) callbacks
-		void keyboard(unsigned char, int, int);
-		void mouse(int, int, int, int);
-		void special(int, int, int);
-		void idle();
-		void render();
+		virtual void keyboard(uchar, int, int);
+		virtual void mouse(int, int, int, int);
+		virtual void special(int, int, int);
+		virtual void idle();
+		virtual void render();
 
 	private:
 		boost::thread thread;
+		const string name;
+		const int w, h;
 
 		void gl_init();			// initializes opengl stuff
 
