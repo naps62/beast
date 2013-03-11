@@ -25,6 +25,7 @@ namespace beast { namespace gl {
 
 	public:
 		async_window(const string _name, const uint _w, const uint _h);
+		virtual ~async_window();
 
 		void start();				// starts the window using a separate boost::thread
 		void stop();				// triggers kill of the window thread

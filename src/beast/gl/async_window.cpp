@@ -15,6 +15,10 @@ namespace beast { namespace gl {
 	{
 	}
 
+	// destructor
+	async_window :: ~async_window() {
+	}
+
 	// start the display thread
 	void async_window :: start() {
 		thread = boost::thread(&async_window::run, this);
@@ -40,7 +44,8 @@ namespace beast { namespace gl {
 
 	// initializes opengl
 	void async_window :: gl_init() {
-		char*  arg0 = "program_name";
+		char* arg0 = new char[15];
+		strcpy(arg0, "program_name");
 		char* argv[] = { &arg0[0], NULL };
 		int argc = 1;
 

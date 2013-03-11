@@ -9,7 +9,7 @@
 #define __BEAST_TYPES_HPP_
 
 typedef unsigned char uchar;
-typedef unsigned int uint;
-
+typedef unsigned int  uint;
+typedef unsigned long ulong;
 
 #endif /* __BEAST_TYPES_HPP_ */
