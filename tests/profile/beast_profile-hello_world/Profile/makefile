@@ -40,7 +40,7 @@ endif
 all: beast_profile-hello_world
 
 dependents:
-	-cd /home/naps62/projects/beast/Profile && $(MAKE) clean all
+	-cd /home/naps62/projects/beast/Profile && $(MAKE) all
 
 # Tool invocations
 beast_profile-hello_world: $(OBJS) $(USER_OBJS) /home/naps62/projects/beast/Profile/libbeast.a

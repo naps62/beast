@@ -28,24 +28,27 @@ using std::vector;
 namespace beast { namespace program_options {
 
 	/**
-	 * Constructors
+	 * constructors
 	 */
-	options::options()
-	: _options(BEAST_PO_DESC)
-	{
+	// default constructor
+	options :: options()
+	: _options(BEAST_PO_DESC) {
 		_init();
 	}
 
-	options::options(const char* desc)
-	: _options(desc)
-	{
+	// constructor receiving a custom options description
+	options :: options(const char* desc)
+	: _options(desc) {
 		_init();
 	}
 
 	/**
-	 * Add methods
+	 * add methods
 	 */
-	options& options::flag(const char* name, bool& var, const char* desc) {
+	options& options :: flag(
+			const char* name,
+			bool& var,
+			const char* desc) {
 		this->_options.add_options() (name, bpo::bool_switch(&var), desc);
 		return *this;
 	}

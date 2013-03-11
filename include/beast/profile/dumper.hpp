@@ -22,6 +22,9 @@ using std::stringstream;
 
 namespace beast { namespace profile {
 
+	/*
+	 * Defines a map<string, string> of profiling values to dump
+	 */
 	class dumper {
 
 		// key-value pair containing counter name and value
@@ -29,22 +32,29 @@ namespace beast { namespace profile {
 
 	public:
 
+		// adds a new abstract object to the map
+		// assumes obj has a name() and a value() method
 		template<class T>
 		void add(const T& obj);
 
+		// dumps the entire map in CSV format
 		void dump() const;
 	};
 
+	/*
+	 * template definitions
+	 */
 	template<class T>
-	void dumper::add(const T& obj) {
-		#ifdef _Profile
-			stringstream name, value;
+	void dumper :: add(const T& obj) {
+		_if_prof(
+			stringstream name;
+			stringstream value;
 			name  << obj.name();
 			value << obj.value();
 			data.insert(make_pair(name.str(), value.str()));
-		#endif
+		)
 	}
 
 } }
 
-#endif /* _BEAST_PROF_DUMPER_HPP_ */
+#endif // _BEAST_PROF_DUMPER_HPP_

@@ -16,6 +16,10 @@ using std::string;
 
 namespace beast { namespace gl {
 
+	/*
+	 * OpenGL window manager running asynchronously on a dedicated thread
+	 * assumes there is only one OpenGL instance running
+	 */
 	class async_window {
 
 		// opengl calls need to be static. A handle to the current async_gl instance is required
@@ -24,15 +28,24 @@ namespace beast { namespace gl {
 
 
 	public:
-		async_window(const string _name, const uint _w, const uint _h);
+		// constructor
+		async_window(
+				const string _name,	// window name
+				const uint _w,		// window width
+				const uint _h);		// window height
+
+		// destructor
 		virtual ~async_window();
 
-		void start();				// starts the window using a separate boost::thread
-		void stop();				// triggers kill of the window thread
-		void join();				// joins the current window thread
-		void run();					// method run by the window thread
+		void start();	// starts the window using a dedicated thread
+		void stop();	// triggers kill of the window thread
+		void join();	// joins the current window thread
+		void run();		// method run by the window thread
 
-		// opengl public (overridable) callbacks
+		/*
+		 * opengl public (overridable) callbacks
+		 * override these methods to add functionality to each event
+		 */
 		virtual void keyboard(uchar, int, int);
 		virtual void mouse(int, int, int, int);
 		virtual void special(int, int, int);
@@ -40,21 +53,24 @@ namespace beast { namespace gl {
 		virtual void render();
 
 	private:
-		boost::thread thread;
-		const string name;
-		const int w, h;
+		boost::thread thread;	// window thread
+		const string name;		// window name
+		const int w, h;			// window dimensions
 
-		void gl_init();			// initializes opengl stuff
+		// initializes opengl stuff
+		void gl_init();
 
-		// opengl private callbacks
-		static void _keyboard(unsigned char, int, int);
-		static void _mouse(int, int, int, int);
-		static void _special(int, int, int);
-		static void _idle();
-		static void _render();
+		/*
+		 * opengl private callbacks
+		 */
+		static void _keyboard(unsigned char, int, int);	// keyboard events
+		static void _mouse(int, int, int, int);			// mouse events
+		static void _special(int, int, int);			// keyboard special functions
+		static void _idle();							// idle
+		static void _render();							// render
 	};
 
 } }
 
 
-#endif /* _BEAST_GL_ASYNC_WINDOW_HPP_ */
+#endif // _BEAST_GL_ASYNC_WINDOW_HPP_

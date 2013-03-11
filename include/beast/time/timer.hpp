@@ -42,27 +42,37 @@ namespace beast { namespace time {
 
 	public:
 
+		/*
+		 * constructors
+		 */
+
+		// default constructor
 		timer()
 		: _name(BEAST_TIMER_NAME), running(false)
-		{
-		}
+		{ }
 
+		// constructor with a name (via string)
 		timer(const string& name)
 		: _name(name), running(false)
-		{
-		}
+		{ }
 
+		// constructor with a name (via char*)
 		timer(const char* name)
 		: _name(name), running(false)
-		{
-		}
+		{ }
 
+		/*
+		 * control functions
+		 */
+
+		// starts the timer
 		__beast_force_inline__
 		void start() {
 			running = true;
 			gettime(_start);
 		}
 
+		// stops the timer
 		__beast_force_inline__
 		void stop() {
 			if (running) {
@@ -71,6 +81,8 @@ namespace beast { namespace time {
 			}
 		}
 
+		// returns the amount of time elapsed since last start
+		// (or until current time if timer is still running)
 		__beast_force_inline__
 		time_val elapsed() {
 			if (running) {
@@ -80,11 +92,14 @@ namespace beast { namespace time {
 			return _elapsed;
 		}
 
-		__beast_force_inline__ string name() const { return _name; }
-		__beast_force_inline__ double ns() const { return _elapsed.ns(); }
-		__beast_force_inline__ double us() const { return _elapsed.us(); }
-		__beast_force_inline__ double ms() const { return _elapsed.ms(); }
-		__beast_force_inline__ double s () const { return _elapsed.s(); }
+		/*
+		 * getters
+		 */
+		__beast_force_inline__ string name()  const { return _name; }
+		__beast_force_inline__ double ns()    const { return _elapsed.ns(); }
+		__beast_force_inline__ double us()    const { return _elapsed.us(); }
+		__beast_force_inline__ double ms()    const { return _elapsed.ms(); }
+		__beast_force_inline__ double s ()    const { return _elapsed.s(); }
 		__beast_force_inline__ double value() const { return ns(); }
 
 	protected:

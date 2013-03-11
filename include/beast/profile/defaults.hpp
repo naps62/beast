@@ -9,7 +9,7 @@
 #define _BEAST_PROF_DEFAULTS_HPP_
 
 
-#endif /* _BEAST_PROF_DEFAULTS_HPP_ */
+#endif // _BEAST_PROF_DEFAULTS_HPP_
 
 
 

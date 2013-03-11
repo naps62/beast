@@ -12,5 +12,5 @@ int main(int argc, char **argv) {
 	timer t("my_timer");
 	t.start();
 	t.stop();
-	cout << t.name << ": " << t.ns() << "ns ";
+	cout << t.name() << ": " << t.ns() << "ns ";
 }

@@ -1,12 +1,12 @@
 /*
- * beast.hpp
+ * init.hpp
  *
  *  Created on: Jan 17, 2013
  *      Author: naps62
  */
 
-#ifndef BEAST_HPP_
-#define BEAST_HPP_
+#ifndef _BEAST_INIT_HPP_
+#define _BEAST_INIT_HPP_
 
 #include <beast/common.hpp>
 
@@ -18,4 +18,4 @@ void init();
 }
 
 
-#endif /* BEAST_HPP_ */
+#endif // _BEAST_INIT_HPP_

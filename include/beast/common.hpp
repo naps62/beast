@@ -5,8 +5,8 @@
  *      Author: naps62
  */
 
-#ifndef __BEAST_COMMON_HPP_
-#define __BEAST_COMMON_HPP_
+#ifndef _BEAST_COMMON_HPP_
+#define _BEAST_COMMON_HPP_
 
 #include <beast/common/macros.hpp>
 #include <beast/common/types.hpp>
@@ -14,4 +14,4 @@
 #include <beast/debug.hpp>
 #include <beast/profile.hpp>
 
-#endif /* __BEAST_COMMON_HPP_ */
+#endif // _BEAST_COMMON_HPP_

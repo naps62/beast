@@ -5,11 +5,14 @@
  *      Author: naps62
  */
 
-#ifndef __BEAST_TYPES_HPP_
-#define __BEAST_TYPES_HPP_
+#ifndef _BEAST_TYPES_HPP_
+#define _BEAST_TYPES_HPP_
 
+/*
+ * unsigned datatypes
+ */
 typedef unsigned char uchar;
 typedef unsigned int  uint;
 typedef unsigned long ulong;
 
-#endif /* __BEAST_TYPES_HPP_ */
+#endif // _BEAST_TYPES_HPP_

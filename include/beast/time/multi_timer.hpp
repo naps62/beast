@@ -19,28 +19,34 @@ using std::string;
 
 namespace beast { namespace time {
 
+	/*
+	 *
+	 */
 	class multi_timer : public timer {
 
+	private:
 		vector<double> _history;
-
 
 	public:
 
+		/*
+		 * constructors
+		 */
 		multi_timer()
-		: timer()
-		{
-		}
+			: timer()
+		{ }
 
 		multi_timer(const string& name)
-		: timer(name)
-		{
-		}
+			: timer(name)
+		{ }
 
 		multi_timer(const char* name)
-		: timer(name)
-		{
-		}
+			: timer(name)
+		{ }
 
+		/*
+		 * control functions
+		 */
 		__beast_force_inline__
 		void stop() {
 			if (running) {
@@ -50,6 +56,9 @@ namespace beast { namespace time {
 			}
 		}
 
+		/*
+		 * history functions
+		 */
 		__beast_force_inline__
 		int count() const {
 			return _history.size();
@@ -69,4 +78,4 @@ namespace beast { namespace time {
 } }
 
 
-#endif /* _BEAST_MULTI_TIMER_HPP_ */
+#endif // _BEAST_MULTI_TIMER_HPP_

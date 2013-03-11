@@ -27,17 +27,17 @@ using std::vector;
 
 namespace beast { namespace profile {
 
-	void dumper::dump() const {
-		#ifdef _Profile
-			stringstream keys, values;
-			//for (data_t::const_iterator it = data.begin(); it != data.end(); ++it) {
+	void dumper :: dump() const {
+		_if_prof(
+			stringstream keys;
+			stringstream values;
 			for (auto it = data.begin(); it != data.end(); ++it) {
 				keys   << (it->first)  << ';';
 				values << (it->second) << ';';
 			}
 
 			std::cerr << keys.str() << '\n' << values.str() << std::endl;
-		#endif
+		)
 	}
 
 } }

@@ -5,8 +5,8 @@
  *      Author: naps62
  */
 
-#ifndef __BEAST_PO_OPTIONS_HPP_
-#define __BEAST_PO_OPTIONS_HPP_
+#ifndef _BEAST_PO_OPTIONS_HPP_
+#define _BEAST_PO_OPTIONS_HPP_
 
 #include <beast/program_options/defaults.hpp>
 
@@ -19,31 +19,49 @@ using bpo::value;
 
 namespace beast { namespace program_options {
 
+	/*
+	 * defines a basis for parsing program options automatically
+	 */
 	class options {
 
-		bpo::options_description _options; ///< holds details of all options allowed by the program
-		bpo::variables_map vm;            ///< value map of all the values parsed
-
+		bpo::options_description _options;	// holds details of all options allowed by the program
+		bpo::variables_map vm;				// value map of all the values parsed
 
 	public:
-		// Constructors
+		/*
+		 * constructors
+		 */
+
+		// default constructor
 		options();
+
+		// constructor receiving a custom options description
 		options(const char* desc);
 
-		/////////////////////////////
-		// Adding options
-		/////////////////////////////
+		/*
+		 * adding options
+		 */
 
-		// Adds a flag
+		// Adds a flag, which default to false
 		// name should be a string like "level" or "level,l"
 		// meaning that --help and -h will be used to identify this option
-		options& flag(const char *name, bool& var, const char *desc = "");
+		options& flag(
+				const char *name,		// flag name. can be of the form "name" (used via --name), or "name,n" (used via --name or the short-form -n)
+				bool& var,				// reference to where to store the value
+				const char *desc = "");	// optional description
+
 
 		// Adds an options with the type being given by the template parameter
 		//   options.add<int>("name", my_int, 2, "description")
 		//
 		// note that instead of an address, my_int is passed as a C++ reference
-		template<class T> options& value(const char* name, T& addr, T default_value = T(), const char *desc = "");
+		template<class T>
+		options& value(
+				const char* name,		// flag name. can be of the form "name" (used via --name), or "name,n" (used via --name or the short-form -n)
+				T& addr,				// reference to where to store the value
+				T default_value = T(),	// default value
+				const char *desc = "");	// optional description
+
 
 		// This method should be called prior to reading any value
 		void parse(int argc, char **argv);
@@ -53,7 +71,6 @@ namespace beast { namespace program_options {
 
 		// Indicates if a given key is present
 		bool has(const char *name) const;
-
 
 		// Gets the value of a flag
 		bool get_flag(const char* name) const;
@@ -79,19 +96,14 @@ namespace beast { namespace program_options {
 		void load_options_file(const std::string& filename);
 	};
 
-
-
-
-
-	//
-	// Template definitions
-	//
+	/*
+	 * template definitions
+	 */
 
 	template<class T>
 	T options::get(const char* name) const {
 		return this->vm[name].as<T>();
 	}
-
 
 	template<class T>
 	options& options::value(const char* name, T& addr, T default_value, const char *desc) {
@@ -106,4 +118,4 @@ namespace beast { namespace program_options {
 } }
 
 
-#endif /* __BEAST_PO_OPTIONS_HPP_ */
+#endif // _BEAST_PO_OPTIONS_HPP_

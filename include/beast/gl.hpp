@@ -12,4 +12,4 @@
 
 #include <beast/gl/async_window.hpp>
 
-#endif /* _BEAST_GL_HPP_ */
+#endif // _BEAST_GL_HPP_
