@@ -21,5 +21,4 @@
 	#define BEAST_TIMER_CLOCK_TYPE		NULL
 #endif
 
-
 #endif // _BEAST_TIME_DEFAULTS_HPP_

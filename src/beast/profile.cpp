@@ -15,7 +15,6 @@ _if_prof(
 	int   __null_fd;
 
 	__out_class out;
-#warning asd
 )
 
 } }

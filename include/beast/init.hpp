@@ -17,5 +17,4 @@ void init();
 
 }
 
-
 #endif // _BEAST_INIT_HPP_

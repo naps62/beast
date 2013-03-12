@@ -47,19 +47,13 @@ namespace beast { namespace time {
 		 */
 
 		// default constructor
-		timer()
-		: _name(BEAST_TIMER_NAME), running(false)
-		{ }
+		timer();
 
 		// constructor with a name (via string)
-		timer(const string& name)
-		: _name(name), running(false)
-		{ }
+		timer(const string& name);
 
 		// constructor with a name (via char*)
-		timer(const char* name)
-		: _name(name), running(false)
-		{ }
+		timer(const char* name);
 
 		/*
 		 * control functions
@@ -112,6 +106,5 @@ namespace beast { namespace time {
 	};
 
 } }
-
 
 #endif /* _BEAST_TIMER_HPP_ */

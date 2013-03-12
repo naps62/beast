@@ -1,5 +1,5 @@
 /*
- * time.hpp
+ * time_val.hpp
  *
  *  Created on: Jan 6, 2013
  *      Author: naps62
@@ -14,6 +14,9 @@
 
 namespace beast { namespace time {
 
+	/*
+	 * stores a time value
+	 */
 	struct time_val : public timespec {
 
 		/*
@@ -21,26 +24,16 @@ namespace beast { namespace time {
 		 */
 
 		// default constructor. sets value to 0
-		time_val() {
-			zero();
-		}
+		time_val();
 
 		// constructor with initial time value (by pointer)
-		time_val(const time_val* const t) {
-			this->tv_sec  = t->tv_sec;
-			this->tv_nsec = t->tv_nsec;
-		}
+		time_val(const time_val* const t);
 
 		// constructor with initial time value (by reference)
-		time_val(const time_val& t) {
-			this->tv_sec  = t.tv_sec;
-			this->tv_nsec = t.tv_nsec;
-		}
+		time_val(const time_val& t);
 
 		// resets the value to 0
-		void zero() {
-			tv_sec = tv_nsec = 0;
-		}
+		void zero();
 
 		/*
 		 * getters
@@ -53,44 +46,11 @@ namespace beast { namespace time {
 		/*
 		 * operators
 		 */
-		const time_val& operator-= (const time_val& t) {
-			if (t.tv_sec > tv_sec || (t.tv_sec == tv_sec && t.tv_nsec > tv_nsec)) {
-				zero();
-			} else {
-				tv_sec -= t.tv_sec;
-				tv_nsec -= t.tv_nsec;
-				if (tv_nsec < 0) {
-					--tv_nsec;
-					tv_nsec += 1e9;
-				}
-			}
-			return *this;
-		}
-
-		time_val operator- (const time_val& t) const {
-			time_val result(*this);
-			result -= t;
-			return result;
-		}
-
-		const time_val& operator+= (const time_val& t) {
-			tv_sec  += t.tv_sec;
-			tv_nsec += t.tv_nsec;
-			if (tv_nsec > 1e9) {
-				++tv_sec;
-				tv_nsec -= 1e9;
-			}
-			return *this;
-		}
-
-		const time_val operator+ (const time_val& t) {
-			time_val result(*this);
-			result += t;
-			return result;
-		}
+		const time_val& operator-= (const time_val& t);
+			  time_val  operator-  (const time_val& t) const;
+		const time_val& operator+= (const time_val& t);
+		const time_val  operator+  (const time_val& t);
 	};
-
 } }
-
 
 #endif // _BEAST_TIME_VAL_HPP_

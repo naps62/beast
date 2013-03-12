@@ -49,21 +49,23 @@
 #endif // _Profile
 
 namespace beast { namespace profile {
-	extern int __out_fd;
-	extern int __null_fd;
+	_if_prof(
+		extern int __out_fd;
+		extern int __null_fd;
 
-	struct __out_class : public std::ofstream {
-		template<class T>
-		__out_class& operator << (const T& obj) {
-			dup2(__out_fd,  fileno(stdout)); // re-enable stdout
-			std::cout << obj;
-			std::cout.flush();
-			dup2(__null_fd, fileno(stdout));  // disable stdout again
-			return *this;
-		}
-	};
+		struct __out_class : public std::ofstream {
+			template<class T>
+			__out_class& operator << (const T& obj) {
+				dup2(profile::__out_fd,  fileno(stdout)); // re-enable stdout
+				std::cout << obj;
+				std::cout.flush();
+				dup2(profile::__null_fd, fileno(stdout));  // disable stdout again
+				return *this;
+			}
+		};
 
-	extern __out_class out;
+		extern __out_class out;
+	)
 } }
 
 #include <beast/profile/defaults.hpp>
