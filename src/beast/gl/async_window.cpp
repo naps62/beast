@@ -10,8 +10,8 @@ namespace beast { namespace gl {
 	async_window* async_window::current_handle;
 
 	// constructor
-	async_window :: async_window(const string _name, const uint _w, const uint _h)
-	: name(_name), w(_w), h(_h)
+	async_window :: async_window(const string _name, const uint _width, const uint _height)
+	: name(_name), width(_width), height(_height)
 	{
 	}
 
@@ -51,7 +51,7 @@ namespace beast { namespace gl {
 
 		// glut main inits
 		glutInit(&argc, argv);
-		glutInitWindowSize(800, 600);
+		glutInitWindowSize(width, height);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 		glutCreateWindow(name.c_str());
 
@@ -64,7 +64,7 @@ namespace beast { namespace gl {
 
 		// default viewport setup
 		glMatrixMode(GL_PROJECTION);
-		glViewport(0, 0, 800, 600);
+		glViewport(0, 0, width, height);
 		glLoadIdentity();
 	}
 

@@ -30,9 +30,9 @@ namespace beast { namespace gl {
 	public:
 		// constructor
 		async_window(
-				const string _name,	// window name
-				const uint _w,		// window width
-				const uint _h);		// window height
+				const string _name,		// window name
+				const uint _width,		// window width
+				const uint _height);	// window height
 
 		// destructor
 		virtual ~async_window();
@@ -55,7 +55,8 @@ namespace beast { namespace gl {
 	private:
 		boost::thread thread;	// window thread
 		const string name;		// window name
-		const int w, h;			// window dimensions
+		const int width;		// window width
+		const int height;		// window height
 
 		// initializes opengl stuff
 		void gl_init();
