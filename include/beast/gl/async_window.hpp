@@ -9,6 +9,7 @@
 #define _BEAST_GL_ASYNC_WINDOW_HPP_
 
 #include <beast/common.hpp>
+#include <beast/time/timer.hpp>
 
 #include <boost/thread.hpp>
 #include <string>
@@ -29,18 +30,15 @@ namespace beast { namespace gl {
 
 	public:
 		// constructor
-		async_window(
-				const string _name,		// window name
-				const uint _width,		// window width
-				const uint _height);	// window height
+		async_window(const string _name, const uint _width, const uint _height);
 
 		// destructor
 		virtual ~async_window();
 
-		void start();	// starts the window using a dedicated thread
-		void stop();	// triggers kill of the window thread
-		void join();	// joins the current window thread
-		void run();		// method run by the window thread
+		void start(const bool wait_for_window = false);
+		void stop();
+		void join();
+		void run();
 
 		/*
 		 * opengl public (overridable) callbacks
@@ -52,23 +50,30 @@ namespace beast { namespace gl {
 		virtual void idle();
 		virtual void render();
 
-	private:
-		boost::thread thread;	// window thread
-		const string name;		// window name
-		const int width;		// window width
-		const int height;		// window height
+		virtual void request_update(float max_ns);
 
-		// initializes opengl stuff
+	protected:
+		boost::thread thread;
+		boost::recursive_mutex display_mutex;
+		boost::mutex wait_for_window_mut;
+		boost::condition_variable wait_for_window_cond;
+		beast::time::timer last_display_timer;
+		bool has_display;
+		const string name;
+		const int width;
+		const int height;
+
 		void gl_init();
+		void start_display_timer();
 
 		/*
 		 * opengl private callbacks
 		 */
-		static void _keyboard(unsigned char, int, int);	// keyboard events
-		static void _mouse(int, int, int, int);			// mouse events
-		static void _special(int, int, int);			// keyboard special functions
-		static void _idle();							// idle
-		static void _render();							// render
+		static void _keyboard(unsigned char, int, int);
+		static void _mouse(int, int, int, int);
+		static void _special(int, int, int);
+		static void _idle();
+		static void _render();
 	};
 
 } }
