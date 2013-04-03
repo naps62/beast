@@ -22,13 +22,12 @@ namespace beast { namespace gl {
 
 	void async_window :: start(const bool wait_for_window) {
 		thread = boost::thread(&async_window::run, this);
-//		if (wait_for_window) {
-//			boost::unique_lock<boost::mutex> lock(wait_for_window_mut);
-//			while(!has_display)
-//			{
-//				wait_for_window_cond.wait(lock);
-//			}
-//		}
+		if (wait_for_window) {
+			boost::unique_lock<boost::mutex> lock(wait_for_window_mut);
+			while(!has_display) {
+				wait_for_window_cond.wait(lock);
+			}
+		}
 	}
 
 
@@ -49,7 +48,7 @@ namespace beast { namespace gl {
 	void async_window :: run() {
 		async_window::current_handle = this;
 		gl_init();
-//		wait_for_window_cond.notify_all();
+		wait_for_window_cond.notify_all();
 		glutMainLoop();
 	}
 
