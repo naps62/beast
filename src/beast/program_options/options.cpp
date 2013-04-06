@@ -58,17 +58,20 @@ namespace beast { namespace program_options {
 	 */
 	void options::parse(int argc, char **argv) {
 		bpo::store(
-				bpo::command_line_parser(argc, argv)                   // command line options
-				   .options(this->_options)                            // option definitions
-				   .extra_parser(options::file_option_parser) // look for @filename argument
+				bpo::command_line_parser(argc, argv)
+				   .options(this->_options)
+				   .positional(this->_positional_options)
 				   .run()
 				, this->vm);
 
 		bpo::notify(this->vm);
 
 		// check for options-file
-		if (vm.count(BEAST_PO_OP_FILE)) {
-			this->load_options_file(vm[BEAST_PO_OP_FILE].as<string>());
+		if (vm.count(BEAST_PO_OP_FILE_LONG)) {
+			vector<string> files = vm[BEAST_PO_OP_FILE_LONG].as<vector<string>>();
+			for(vector<string>::reverse_iterator it = files.rbegin(); it < files.rend(); ++it) {
+				this->load_options_file(*it);
+			}
 		}
 
 		// deal with help options
@@ -100,15 +103,16 @@ namespace beast { namespace program_options {
 	void options::_init() {
 		this->_options.add_options()
 			(BEAST_PO_HELP_OP, BEAST_PO_HELP_DESC)
-			(BEAST_PO_OP_FILE, bpo::value<string>(), BEAST_PO_OP_FILE_DESC);
+			(BEAST_PO_OP_FILE, bpo::value<vector<string>>(), BEAST_PO_OP_FILE_DESC);
+		this->_positional_options.add(BEAST_PO_OP_FILE_LONG, -1);
 	}
 
-	pair<string, string> options::file_option_parser(const string& s) {
-		if (s[0] == '@')
-			return make_pair(string(BEAST_PO_OP_FILE), s.substr(1));
-		else
-			return pair<string, string>();
-	}
+//	pair<string, string> options::file_option_parser(const string& s) {
+//		if (s[0] == '@')
+//			return make_pair(string(BEAST_PO_OP_FILE), s.substr(1));
+//		else
+//			return pair<string, string>();
+//	}
 
 	void options::load_options_file(const string& filename) {
 		// Load the file and tokenize it

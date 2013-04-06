@@ -24,8 +24,9 @@ namespace beast { namespace program_options {
 	 */
 	class options {
 
-		bpo::options_description _options;	// holds details of all options allowed by the program
-		bpo::variables_map vm;				// value map of all the values parsed
+		bpo::options_description _options;
+		bpo::positional_options_description _positional_options;
+		bpo::variables_map vm;
 
 	public:
 		/*
@@ -90,7 +91,7 @@ namespace beast { namespace program_options {
 		template<class T> options& _value(const char* name, bpo::value_semantic* semantic, const char *desc = NULL);
 
 		// looks for a @filename option in the arguments
-		static std::pair<std::string, std::string> file_option_parser(const std::string& s);
+//		static std::pair<std::string, std::string> file_option_parser(const std::string& s);
 
 		// load an options file
 		void load_options_file(const std::string& filename);
