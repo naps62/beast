@@ -69,7 +69,7 @@ namespace beast { namespace program_options {
 		// check for options-file
 		if (vm.count(BEAST_PO_OP_FILE_LONG)) {
 			vector<string> files = vm[BEAST_PO_OP_FILE_LONG].as<vector<string>>();
-			for(vector<string>::reverse_iterator it = files.rbegin(); it < files.rend(); ++it) {
+			for(vector<string>::reverse_iterator it = files.rbegin(); it != files.rend(); ++it) {
 				this->load_options_file(*it);
 			}
 		}

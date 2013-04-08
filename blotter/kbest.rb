@@ -35,10 +35,10 @@ class Execution
 end
 
 
-def done?(size, diff, params)
-  return false if params[:min] > 0 && size <  params[:min] # at least #{min} runs made
-  return true  if params[:max] > 0 && size >= params[:max] # at most  #{max} runs made
-  return true  if size >= params[:k]
+def done?(execs, values, diff, params)
+  return false if params[:min] > 0 && execs <  params[:min] # at least #{min} runs made
+  return true  if params[:max] > 0 && execs >= params[:max] # at most  #{max} runs made
+  return true  if values >= params[:k]
   return false
 end
 
@@ -47,26 +47,28 @@ execs = SortedSet.new
 k     = opts[:k]
 
 begin
+  puts "    run #[#{execs.size}]"
   # call the program
   execs.add(Execution.new(command))
   # only the value of the first k results is relevant
   values = execs.to_a[0..k].map(&:value)
   # results are ordered, so the last diff is enough to check if we have k good results
   diff = (values.last - values.first) / values.first
-end until done?(values.size, diff, opts)
+end until done?(execs.size, values.size, diff, opts)
 
 final = execs.to_a[0..k]
 
 out_root = opts[:out]
-FileUtils.mkdir out_root
-times_output = File.open("#{out_root}/times", 'w')
+FileUtils.mkdir_p out_root
+times_output = File.open("#{out_root}/kbest_times.csv", 'w')
 final.each_with_index do |exec, i|
   times_output << "#{i}, #{exec.value}\n"
-  single_exec_output = File.open("#{out_root}/#{i}.csv", 'w')
-  single_exec_output << exec.out.join
-  single_exec_output.close
+
+  {out: exec.out, err: exec.err}.each_pair do |ext, stream|
+    file = File.open "#{out_root}/#{i}.#{ext}", "w"
+    file << stream.join
+    file.close
+  end
 end
 
 times_output.close
-
-binding.pry
