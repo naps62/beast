@@ -1,4 +1,4 @@
-#/usr/bin/env ruby
+#!/usr/bin/env ruby
 
 require 'trollop'
 require 'open3'
@@ -6,11 +6,12 @@ require 'set'
 require 'pry'
 
 opts = Trollop::options do
-  opt :k,       'number of results to consider',                  default: 5
-  opt :diff,    '% of difference between the k selected results', default: 0.10
-  opt :min,     'minimum number of executions',                   default: 1,     short: :m
-  opt :max,     'maximum number of executions',                   default: 20,    short: :M
-  opt :reverse, 'are we looking for the highest instead?',        default: false, short: :r
+  opt :k,       'number of results to consider',                  default: 3
+  opt :diff,    '% of difference between the k selected results', default: 0.05
+  opt :min,     'minimum number of executions',                   default: 1,        short: :m
+  opt :max,     'maximum number of executions',                   default: 20,       short: :M
+  opt :reverse, 'are we looking for the highest instead?',        default: false,    short: :r
+  opt :out,     'output directory',                               default: 'kbest/', short: :o
 end
 
 command = ARGV.join ' '
@@ -22,7 +23,7 @@ class Execution
     stdin, out, err, @thread = Open3.popen3(command)
     @out = out.readlines
     @err = err.readlines
-    @value = @out.last.to_f
+    @value = @err.last.to_f
   end
 
   def <=>(other)
@@ -55,4 +56,17 @@ begin
 end until done?(values.size, diff, opts)
 
 final = execs.to_a[0..k]
+
+out_root = opts[:out]
+FileUtils.mkdir out_root
+times_output = File.open("#{out_root}/times", 'w')
+final.each_with_index do |exec, i|
+  times_output << "#{i}, #{exec.value}\n"
+  single_exec_output = File.open("#{out_root}/#{i}.csv", 'w')
+  single_exec_output << exec.out.join
+  single_exec_output.close
+end
+
+times_output.close
+
 binding.pry
