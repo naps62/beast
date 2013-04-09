@@ -79,6 +79,8 @@ namespace beast { namespace gl {
 		glMatrixMode(GL_PROJECTION);
 		glViewport(0, 0, width, height);
 		glLoadIdentity();
+		glOrtho(0.f, width - 1.f,
+				0.f, height - 1.f, -1.f, 1.f);
 		has_display = true;
 	}
 
