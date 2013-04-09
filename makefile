@@ -76,43 +76,40 @@ endif
 
 define make-files
 $1/%.d: %.cu
-	$(NVCC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " DEPS   $$@"
+	@$(NVCC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.cpp
-	@echo $$@
-		@echo $(CXX)
-	$(CXX) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " DEPS   $$@"
+	@$(CXX) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.c
-	$(CC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " DEPS   $$@"
+	@$(CC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.cu
-	@echo "Compile "$$<
-	$(NVCC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " NVCC   $$<"
+	@$(NVCC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.cpp
-	@echo "Compile "$$<
-	$(CXX) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " CXX    $$<"
+	@$(CXX) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.c
-	@echo "Compile "$$<
-	$(CC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@echo " CC     $$<"
+	@$(CC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 endef
 
-.PHONY: all checkdirs clean asd
+.PHONY: all checkdirs clean
 
 
 bin/$(BINNAME): $(DEPS) $(OBJ)
-	@echo "Creating build tree"
-	@mkdir -p bin
-	@mkdir -p build
-	$(LD) $(LDFLAGS) $(OMP) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
+	@echo " LD     $$@"
+	@$(LD) $(LDFLAGS) $(OMP) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
 
 lib/$(LIBNAME): $(DEPS) $(OBJ)
-	@echo "Creating build tree"
-	@mkdir -p lib
-	@mkdir -p build
-	$(AR) $(ARFLAGS) -r "lib/$(LIBNAME)" $(OBJ)
+	@echo " AR     $(LIBNAME)"
+	@$(AR) $(ARFLAGS) -r "lib/$(LIBNAME)" $(OBJ) 2> /dev/null
 
 checkdirs: $(BUILD_DIR)
 
@@ -127,7 +124,7 @@ clean:
 asd:
 	@echo "asd"
 
-bin: asd
+bin: checkdirs bin/$(BINNAME)
 lib: checkdirs lib/$(LIBNAME)
 
 $(foreach bdir,$(BUILD_DIR),$(eval $(call make-files,$(bdir))))
