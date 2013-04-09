@@ -134,9 +134,4 @@ clean:
 bin: checkdirs bin/$(BINNAME)
 lib: checkdirs lib/$(LIBNAME)
 
-#ifeq ($(CUDA_SUPPORT),yes)
-#$(foreach bdir,$(BUILD_DIR),$(eval $(call make-cuda,$(bdir))))
-#else
-#$(foreach bdir,$(BUILD_DIR),$(eval $(call make-ncuda,$(bdir))))
-#endif
 $(foreach bdir,$(BUILD_DIR),$(eval $(call make-files,$(bdir))))
