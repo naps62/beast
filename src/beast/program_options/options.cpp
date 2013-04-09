@@ -68,7 +68,7 @@ namespace beast { namespace program_options {
 
 		// check for options-file
 		if (vm.count(BEAST_PO_OP_FILE_LONG)) {
-			vector<string> files = vm[BEAST_PO_OP_FILE_LONG].as<vector<string>>();
+			vector<string> files = vm[BEAST_PO_OP_FILE_LONG].as<vector<string> >();
 			for(vector<string>::reverse_iterator it = files.rbegin(); it != files.rend(); ++it) {
 				this->load_options_file(*it);
 			}
@@ -103,7 +103,7 @@ namespace beast { namespace program_options {
 	void options::_init() {
 		this->_options.add_options()
 			(BEAST_PO_HELP_OP, BEAST_PO_HELP_DESC)
-			(BEAST_PO_OP_FILE, bpo::value<vector<string>>(), BEAST_PO_OP_FILE_DESC);
+			(BEAST_PO_OP_FILE, bpo::value<vector<string> >(), BEAST_PO_OP_FILE_DESC);
 		this->_positional_options.add(BEAST_PO_OP_FILE_LONG, -1);
 	}
 

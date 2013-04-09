@@ -90,9 +90,9 @@ namespace beast { namespace gl {
 	// Callbacks
 	//
 	void async_window :: render() { }
-	void async_window :: keyboard(uchar key, int mousex, int mousey) { }
-	void async_window :: mouse(int btn, int state, int x, int y) { }
-	void async_window :: special(int key, int mousex, int mousey) { }
+	void async_window :: keyboard(uchar, int, int) { }
+	void async_window :: mouse(int, int, int, int) { }
+	void async_window :: special(int, int, int) { }
 	void async_window :: idle() { }
 
 

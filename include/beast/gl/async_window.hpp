@@ -44,9 +44,9 @@ namespace beast { namespace gl {
 		 * opengl public (overridable) callbacks
 		 * override these methods to add functionality to each event
 		 */
-		virtual void keyboard(uchar, int, int);
-		virtual void mouse(int, int, int, int);
-		virtual void special(int, int, int);
+		virtual void keyboard(uchar, int mousex, int mousey);
+		virtual void mouse(int btn, int state, int x, int y);
+		virtual void special(int key, int mousex, int mousey);
 		virtual void idle();
 		virtual void render();
 
