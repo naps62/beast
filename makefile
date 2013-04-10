@@ -71,7 +71,7 @@ else
 CC   := gcc  $(CFLAGS)
 CXX  := g++  $(CFLAGS)
 NVCC := nvcc $(NVFLAGS) -Xcompiler "$(CFLAGS)"
-LD   := gcc  $(CFLAGS)
+LD   := gcc  $(LDFLAGS)
 endif
 
 define make-files
@@ -104,8 +104,8 @@ endef
 
 
 bin/$(BINNAME): $(DEPS) $(OBJ)
-	@echo " LD     $$@"
-	@$(LD) $(LDFLAGS) $(OMP) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
+	@echo " LD     $(BINNAME)"
+	@$(LD) $(OMP) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
 
 lib/$(LIBNAME): $(DEPS) $(OBJ)
 	@echo " AR     $(LIBNAME)"
