@@ -54,7 +54,7 @@
 									<listOptionValue builtIn="false" value="rt"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1382930323" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/beast/Release}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/beast/Debug}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1338082924" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -75,7 +75,7 @@
 				<externalSettings containerId="beast;" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/beast"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/beast/Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/beast/Debug"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="beast"/>
 					</externalSetting>
 				</externalSettings>
@@ -133,7 +133,7 @@
 									<listOptionValue builtIn="false" value="rt"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1687154012" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/beast/Release}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/beast/Debug}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.357449684" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -154,7 +154,7 @@
 				<externalSettings containerId="beast;" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/beast"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/beast/Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/beast/Debug"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="beast"/>
 					</externalSetting>
 				</externalSettings>

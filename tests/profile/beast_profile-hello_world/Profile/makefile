@@ -40,13 +40,13 @@ endif
 all: beast_profile-hello_world
 
 dependents:
-	-cd /home/naps62/projects/beast/Profile && $(MAKE) all
+	-cd /home/naps62/projects/msc-thesis/src/beast/Debug && $(MAKE) clean all
 
 # Tool invocations
-beast_profile-hello_world: $(OBJS) $(USER_OBJS) /home/naps62/projects/beast/Profile/libbeast.a
+beast_profile-hello_world: $(OBJS) $(USER_OBJS) /home/naps62/projects/msc-thesis/src/beast/Debug/libbeast.a
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L"/home/naps62/projects/beast/Profile" -o "beast_profile-hello_world" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/naps62/projects/msc-thesis/src/beast/Debug" -o "beast_profile-hello_world" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -57,6 +57,6 @@ clean:
 
 .PHONY: all clean dependents
 .SECONDARY:
-/home/naps62/projects/beast/Profile/libbeast.a:
+/home/naps62/projects/msc-thesis/src/beast/Debug/libbeast.a:
 
 -include ../makefile.targets
