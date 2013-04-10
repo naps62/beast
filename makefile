@@ -11,7 +11,7 @@ EXCLUDE_DIR :=
 ARCH := $(shell getconf LONG_BIT)
 OMP  := openmp
 
-CFLAGS  := -m$(ARCH) -O3 -Wall -Wextra -std=c++0x
+CFLAGS  := -m$(ARCH) -O3 -Wall -std=c++0x
 NVFLAGS := -m$(ARCH) -O3
 LDFLAGS := -m$(ARCH)
 ARFLAGS :=
