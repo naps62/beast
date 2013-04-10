@@ -3,9 +3,10 @@
 require 'trollop'
 require 'open3'
 require 'set'
-require 'pry'
+require 'fileutils'
+# require 'pry'
 
-opts = Trollop::options do
+$opts = Trollop::options do
   opt :k,       'number of results to consider',                  default: 3
   opt :diff,    '% of difference between the k selected results', default: 0.05
   opt :min,     'minimum number of executions',                   default: 1,        short: :m
@@ -29,7 +30,7 @@ class Execution
   def <=>(other)
     ret = @value <=> other.value
     return @thread.pid <=> other.thread.pid if ret.zero?
-    return  ret unless opts[:reverse]
+    return  ret unless $opts[:reverse]
     return -ret
   end
 end
@@ -44,7 +45,7 @@ end
 
 
 execs = SortedSet.new
-k     = opts[:k]
+k     = $opts[:k]
 
 begin
   puts "    run #[#{execs.size}]"
@@ -54,11 +55,11 @@ begin
   values = execs.to_a[0..k].map(&:value)
   # results are ordered, so the last diff is enough to check if we have k good results
   diff = (values.last - values.first) / values.first
-end until done?(execs.size, values.size, diff, opts)
+end until done?(execs.size, values.size, diff, $opts)
 
 final = execs.to_a[0..k]
 
-out_root = opts[:out]
+out_root = $opts[:out]
 FileUtils.mkdir_p out_root
 times_output = File.open("#{out_root}/kbest_times.csv", 'w')
 final.each_with_index do |exec, i|
@@ -72,3 +73,4 @@ final.each_with_index do |exec, i|
 end
 
 times_output.close
+
