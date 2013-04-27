@@ -121,9 +121,6 @@ clean:
 	rm -rf bin/$(BINNAME)
 	rm -rf lib/$(LIBNAME)
 
-asd:
-	@echo "asd"
-
 bin: checkdirs bin/$(BINNAME)
 lib: checkdirs lib/$(LIBNAME)
 
