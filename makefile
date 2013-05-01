@@ -77,15 +77,17 @@ endif
 define make-files
 $1/%.d: %.cu
 	@echo " DEPS   $$@"
-	@$(NVCC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(NVCC) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.cpp
 	@echo " DEPS   $$@"
-	@$(CXX) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(CXX) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.c
 	@echo " DEPS   $$@"
-	@$(CC) -M $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(CC) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+
+-include $1/%.d
 
 $1/%.o: %.cu
 	@echo " NVCC   $$<"
