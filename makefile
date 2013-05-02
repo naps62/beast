@@ -73,17 +73,15 @@ endif
 define make-files
 $1/%.d: %.cu
 	@echo " DEPS   $$@"
-	@$(NVCC) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(NVCC) -M -MT 'build/$$*.o' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.cpp
 	@echo " DEPS   $$@"
-	@$(CXX) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(CXX) -M -MT 'build/$$*.o' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.d: %.c
 	@echo " DEPS   $$@"
-	@$(CC) -M -MT '$$<' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
-
--include $1/%.d
+	@$(CC) -M -MT 'build/$$*.o' $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.cu
 	@echo " NVCC   $$<"
@@ -98,8 +96,11 @@ $1/%.o: %.c
 	@$(CC) -c $(DEFINES) $(INCLUDES) $$< -o $$@
 endef
 
-.PHONY: all checkdirs clean asd
-
+define include-dep-file
+ifneq ($(wildcard $1),)
+-include $1
+endif
+endef
 
 bin/$(BINNAME): $(DEPS) $(OBJ)
 	@echo " LD    $(BINNAME)"
@@ -122,3 +123,4 @@ bin: $(BUILD_DIR) bin/$(BINNAME)
 lib: $(BUILD_DIR) lib/$(LIBNAME)
 
 $(foreach bdir,$(BUILD_DIR),$(eval $(call make-files,$(bdir))))
+$(foreach dep,$(DEPS),$(eval $(call include-dep-file,$(dep))))
