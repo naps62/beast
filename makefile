@@ -6,18 +6,21 @@ SRC_DIR           := src
 CUDA_SUPPORT      := no
 CUDA_INSTALL_PATH := /usr/local/cuda-5.0
 
-EXCLUDE_DIR :=
-
 ARCH := $(shell getconf LONG_BIT)
 OMP  := openmp
+OMP := $(addprefix -f,$(OMP))
 
-CFLAGS  := -m$(ARCH) -O3 -Wall -std=c++0x
+
+BEAST_ROOT := $(HOME)/projects/beast
+FREEIMAGE_ROOT := /share/edu-mei/freeimage/3.15.4
+
+CFLAGS  := -m$(ARCH) -O3 -Wall -Wno-unused-result
 NVFLAGS := -m$(ARCH) -O3
 LDFLAGS := -m$(ARCH)
 ARFLAGS :=
-LD_LIBS       := lglut lGLU lGL boost_system boost_thread boost_chrono # gomp dl cublas pthread cudart cufft fftw3 GLEW GL boost_filesystem boost_system freeimage64 boost_thread OpenCL
-INCLUDE_DIR   := include /usr/local/include /usr/include/GL $(CUDA_INSTALL_PATH)/include $(BOOST_ROOT)/include
-LD_LIBS_DIR   := /usr/lib /usr/local/lib /opt/local/lib $(CUDA_INSTALL_PATH)/lib $(BOOST_ROOT)/lib
+LD_LIBS       := glut GLU GL boost_program_options boost_system boost_thread-mt boost_chrono freeimage
+INCLUDE_DIR   := include /usr/local/include /usr/include/GL $(CUDA_INSTALL_PATH)/include $(BOOST_ROOT)/include $(BEAST_ROOT)/include $(FREEIMAGE_ROOT)/include
+LD_LIBS_DIR   := /usr/lib /usr/local/lib /opt/local/lib $(CUDA_INSTALL_PATH)/lib $(BOOST_ROOT)/lib $(BEAST_ROOT)/lib $(FREEIMAGE_ROOT)/lib/linux $(FREEIMAGE_ROOT)/lib
 CUDA_LIBS_DIR := $(CUDA_INSTALL_PATH)/lib64 $(CUDA_INSTALL_PATH)/lib
 
 
@@ -48,30 +51,23 @@ LD_LIBS     := $(addprefix -l,$(LD_LIBS))
 LD_LIBS_DIR := $(addprefix -L,$(LD_LIBS_DIR))
 LD_LIBS_DIR += $(addprefix -L,$(CUDA_LIBS_DIR))
 
-ifeq ($(CUDA_SUPPORT),yes)
-OMP := $(addprefix -Xcompiler -f,$(OMP))
-else
-OMP := $(addprefix -f,$(OMP))
-endif
-
 vpath %.cpp $(SRC_DIR)
 vpath %.c $(SRC_DIR)
+
+
+CC   := g++ $(CFLAGS) $(OMP)
+CXX  := g++ $(CFLAGS) $(OMP)
 
 ifeq ($(CUDA_SUPPORT),yes)
 NVFLAGS := $(NVFLAGS) -gencode arch=compute_20,code=sm_20 -gencode arch=compute_20,code=sm_21 -gencode arch=compute_30,code=sm_30
 LDFLAGS := $(LDFLAGS) -gencode arch=compute_20,code=sm_20 -gencode arch=compute_20,code=sm_21 -gencode arch=compute_30,code=sm_30
 vpath %.cu $(SRC_DIR)
-
-CC   := nvcc -x c   $(NVFLAGS) -Xcompiler "$(CFLAGS)"
-CXX  := nvcc -x c++ $(NVFLAGS) -Xcompiler "$(CFLAGS)"
-NVCC := nvcc -x cu  $(NVFLAGS) -Xcompiler "$(CFLAGS)"
-LD   := nvcc -link  $(NVFLAGS) -Xcompiler "$(CFLAGS)"
+NVCC := nvcc -x cu  $(NVFLAGS) -Xcompiler "$(CFLAGS) $(OMP)"
+LD   := nvcc -link  $(LDFLAGS) -Xcompiler "$(OMP)"
 AR   := ar
 else
-CC   := gcc  $(CFLAGS)
-CXX  := g++  $(CFLAGS)
-NVCC := nvcc $(NVFLAGS) -Xcompiler "$(CFLAGS)"
-LD   := gcc  $(LDFLAGS)
+NVCC := nvcc $(NVFLAGS) -Xcompiler "$(CFLAGS) $(OMP)"
+LD   := gcc  $(LDFLAGS) $(OMP)
 endif
 
 define make-files
@@ -91,39 +87,38 @@ $1/%.d: %.c
 
 $1/%.o: %.cu
 	@echo " NVCC   $$<"
-	@$(NVCC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(NVCC) -c $(DEFINES) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.cpp
 	@echo " CXX    $$<"
-	@$(CXX) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(CXX) -c $(DEFINES) $(INCLUDES) $$< -o $$@
 
 $1/%.o: %.c
 	@echo " CC     $$<"
-	@$(CC) -c $(DEFINES) $(OMP) $(INCLUDES) $$< -o $$@
+	@$(CC) -c $(DEFINES) $(INCLUDES) $$< -o $$@
 endef
 
-.PHONY: all checkdirs clean
+.PHONY: all checkdirs clean asd
 
 
 bin/$(BINNAME): $(DEPS) $(OBJ)
-	@echo " LD     $(BINNAME)"
-	@$(LD) $(OMP) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
+	@echo " LD    $(BINNAME)"
+	@$(LD) $(LD_LIBS_DIR) $(LD_LIBS) $(OBJ) -o $@
 
 lib/$(LIBNAME): $(DEPS) $(OBJ)
 	@echo " AR     $(LIBNAME)"
 	@$(AR) $(ARFLAGS) -r "lib/$(LIBNAME)" $(OBJ) 2> /dev/null
 
-checkdirs: $(BUILD_DIR)
-
 $(BUILD_DIR):
 	@mkdir -p $@
+	@mkdir -p bin
 
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf bin/$(BINNAME)
 	rm -rf lib/$(LIBNAME)
 
-bin: checkdirs bin/$(BINNAME)
-lib: checkdirs lib/$(LIBNAME)
+bin: $(BUILD_DIR) bin/$(BINNAME)
+lib: $(BUILD_DIR) lib/$(LIBNAME)
 
 $(foreach bdir,$(BUILD_DIR),$(eval $(call make-files,$(bdir))))
