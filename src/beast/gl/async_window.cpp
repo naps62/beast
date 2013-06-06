@@ -66,6 +66,7 @@ namespace beast { namespace gl {
 		glutInit(&argc, argv);
 		glutInitWindowSize(width, height);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 		glutCreateWindow(name.c_str());
 
 		// callbacks
