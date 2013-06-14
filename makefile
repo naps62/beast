@@ -67,7 +67,7 @@ LD   := nvcc -link  $(LDFLAGS) -Xcompiler "$(OMP)"
 AR   := ar
 else
 NVCC := nvcc $(NVFLAGS) -Xcompiler "$(CFLAGS) $(OMP)"
-LD   := gcc  $(LDFLAGS) $(OMP)
+LD   := g++  $(LDFLAGS) $(OMP)
 endif
 
 define make-files
